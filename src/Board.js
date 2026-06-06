@@ -6,21 +6,21 @@ import './Board.css';
 
 export default class Board extends React.Component {
   constructor(props) {
-    super(props);
-    const clients = this.getClients();
-    this.state = {
-      clients: {
-        backlog: clients.map(client => ({...client, status: 'backlog'})),  // ALL start in backlog
-        inProgress: [],   // empty initially
-        complete: [],     // empty initially
-      }
-    }
-    this.swimlanes = {
-      backlog: React.createRef(),
-      inProgress: React.createRef(),
-      complete: React.createRef(),
+  super(props);
+  const clients = this.getClients();
+  this.state = {
+    clients: {
+      backlog: clients,    
+      inProgress: [],      
+      complete: [],        
     }
   }
+  this.swimlanes = {
+    backlog: React.createRef(),
+    inProgress: React.createRef(),
+    complete: React.createRef(),
+  }
+}
 
   getClients() {
     return [
