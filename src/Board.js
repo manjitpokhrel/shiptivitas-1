@@ -21,6 +21,7 @@ export default class Board extends React.Component {
       complete: React.createRef(),
     }
   }
+
   getClients() {
     return [
       ['1','Stark, White and Abbott','Cloned Optimal Architecture', 'in-progress'],
@@ -50,9 +51,31 @@ export default class Board extends React.Component {
       status: companyDetails[3],
     }));
   }
+
+  componentDidMount() {
+    const { backlog, inProgress, complete } = this.swimlanes;
+
+    Dragula([
+      backlog.current,
+      inProgress.current,
+      complete.current,
+    ]).on('drop', (el, target) => {
+      const statusMap = {
+        [backlog.current]:    { status: 'backlog',     colorClass: 'Card-grey'  },
+        [inProgress.current]: { status: 'in-progress', colorClass: 'Card-blue'  },
+        [complete.current]:   { status: 'complete',    colorClass: 'Card-green' },
+      };
+
+      const { colorClass } = statusMap[target];
+
+      el.classList.remove('Card-grey', 'Card-blue', 'Card-green');
+      el.classList.add(colorClass);
+    });
+  }
+
   renderSwimlane(name, clients, ref) {
     return (
-      <Swimlane name={name} clients={clients} dragulaRef={ref}/>
+      <Swimlane name={name} clients={clients} dragulaRef={ref} />
     );
   }
 
